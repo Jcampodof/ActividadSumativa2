@@ -13,7 +13,7 @@
 </head>
 <body>
 <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-	<a class="navbar-brand" href="/">Home</a>
+	<a class="navbar-brand" href="/">Logout</a>
   	<a class="navbar-brand" href="/usuario" >Registrar Usuario</a>
 	<a class="navbar-brand" href="/productos" >Productos</a>
 	<a class="navbar-brand" href="/categoria" >Categoría</a>
@@ -53,7 +53,7 @@
 		</div>
 	</div>
 
-
+<!--  Lista de Productos
 <div class="container">
 		<div class="row">
 			<div class="panel panel-primary">
@@ -88,6 +88,64 @@
 			</div>
 		</div>
 </div>
+ -->
+
+
+<div class="container ">
+		<div class="row">
+			<div class="panel panel-primary">
+				<div class="panel-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Descripción</th>
+								<th>Precio</th>
+								<th>Agregar a Carrito</th>
+								<th>Modificar</th>
+								<th>Eliminar</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var = "producto" items="${productos.content}">
+							<tr>
+								<td>
+								<c:out value="${producto.name}"></c:out>
+								</td>
+								<td>
+								<c:out value="${producto.description}"></c:out>
+								</td>
+								<td>
+								<c:out value="${producto.price}"></c:out>
+								</td>
+								<td><a href="/carrito/insertar/${producto.id}/${producto.name}/${producto.description}/${producto.price}">Agregar al Carrito</a></td>
+								<td><a href="/productos/editar/${producto.id}">Editar</a></td>
+								<td><a href="/productos/eliminar/${producto.id}">Eliminar</a></td>
+							</tr>
+							</c:forEach>
+						
+							</table>
+						</tbody>
+						
+			<div class="container">
+				<div class="row">
+					<div class="panel panel-primary">
+					<div class="panel-body">
+						<c:forEach begin="1" end="${totalPaginas}" var="index">
+							<a href="/productos/pagina/${index}">
+							<button type="button" class="btn btn-outline-primary"> ${index} </button>
+							</a>
+						</c:forEach>
+					</div>
+					</div>
+				</div>
+			</div>
+
+				</div>
+			</div>
+		</div>
+</div>
+
 
 </body>
 </html>

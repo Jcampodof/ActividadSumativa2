@@ -2,6 +2,8 @@ package Evaluacion2.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,17 +21,24 @@ public class CarritoController {
 	CarritoService carrService;
 	
 	@RequestMapping("")
-	public String inicioCarr(Model model) {
+	public String inicioCarr(HttpSession session, Model model) {
 		List<Carrito> listaCarrito = carrService.findAll();
 		model.addAttribute("listaCarrito",listaCarrito);
-		return "carro.jsp";
+		Integer registrado = (Integer) session.getAttribute("registrado");
+		if (registrado==1) {
+			return "carro.jsp";
+		}
+		else {
+			return "index.jsp";
+		}
 	}
 	
 	@RequestMapping("/insertar/{id}/{name}/{description}/{price}")
 	public String insertarCarr(@PathVariable("id") Long id,
 			@PathVariable("name") String name,
 			@PathVariable("description") String description,
-			@PathVariable("price") String price) {
+			@PathVariable("price") String price,
+			HttpSession session) {
 		
 		Carrito carro = new Carrito();
 		carro.setName(name);
@@ -42,13 +51,14 @@ public class CarritoController {
 	}
 	
 	@RequestMapping("/eliminar/{id}")
-	public String deleteCarr(@PathVariable("id") Long id) {
+	public String deleteCarr(@PathVariable("id") Long id,
+			HttpSession session) {
 		carrService.deleteCarr(id);
 		return "redirect:/carrito";
 	}
 	
 	@RequestMapping("/vaciar")
-	public String vaciarCarr() {
+	public String vaciarCarr(HttpSession session) {
 		carrService.deleteAll();
 		return "redirect:/carrito";
 	}

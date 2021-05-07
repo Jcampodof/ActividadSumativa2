@@ -13,7 +13,7 @@
 </head>
 <body>
 <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-	<a class="navbar-brand" href="/">Home</a>
+	<a class="navbar-brand" href="/">Logout</a>
   	<a class="navbar-brand" href="/usuario" >Registrar Usuario</a>
 	<a class="navbar-brand" href="/productos" >Productos</a>
 	<a class="navbar-brand" href="/categoria" >Categoría</a>
@@ -26,7 +26,7 @@
 				<div class="panel-body">
 					<form method="POST" action="/categoria/insertar">
 						<div class="form-group">
-							<h2>Agregar Producto</h2>
+							<h2>Agregar Categoria</h2>
 						</div>
 						<div class="form-group">
 							<label class="control-label" for="nombre">Nombre:</label>
@@ -41,7 +41,33 @@
 				</div>
 			</div>
 		</div>
-	</div>
+</div>
+
+<div class="container">
+		<div class="row">
+			<div class="panel panel-primary">
+				<div class="panel-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach var = "categoria" items="${listaCategorias}">
+							<tr>
+								<td><c:out value="${categoria.nombre}"></c:out></td>
+							</tr>
+							</c:forEach>
+						</tbody>
+						
+						
+					</table>
+				</div>
+			</div>
+		</div>
+</div>
+
 
 </body>
 </html>

@@ -13,7 +13,7 @@
 </head>
 <body>
 <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-	<a class="navbar-brand" href="/">Home</a>
+	<a class="navbar-brand" href="/">Logout</a>
   	<a class="navbar-brand" href="/usuario" >Registrar Usuario</a>
 	<a class="navbar-brand" href="/productos" >Productos</a>
 	<a class="navbar-brand" href="/categoria" >Categoría</a>
@@ -62,14 +62,18 @@
 								<td></td>
 								<td></td>
 								<td> ${ total}</td>
-								<td></td>
+								<td>
+									<a href="/carrito/vaciar"> <button class="btn btn-success">Comprar </button>
+									</a>
+								</td>
 							</tr>
 						</tbody>
 						
 						
 					<form method="POST" action="/carrito/vaciar" role="form">
-					<button id="vaciar" type="submit" class="btn btn-info btn-block">Vaciar Carrito</button>
+					<button id="vaciar" type="submit" class="btn btn-info">Vaciar Carrito</button>
 					</form>
+					
 				</div>
 			</div>
 		</div>

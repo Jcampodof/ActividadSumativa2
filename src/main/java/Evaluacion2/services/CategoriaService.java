@@ -22,5 +22,15 @@ public class CategoriaService {
 		return categRepository.findAll();
 	}
 
+	public Categoria findById(Long id) {
+		// TODO Auto-generated method stub
+		return categRepository.findById(id).get();
+	}
+
+	public void deleteCat(Long id) {
+		// TODO Auto-generated method stub
+		categRepository.deleteById(id);
+	}
+
 
 }

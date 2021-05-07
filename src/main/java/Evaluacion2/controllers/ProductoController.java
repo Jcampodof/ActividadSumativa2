@@ -2,7 +2,10 @@ package Evaluacion2.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,12 +26,30 @@ public class ProductoController {
 	@Autowired
 	CategoriaRepository categService;
 	
+	private static final int PAGE_SIZE = 4;
+	
+	
 	@RequestMapping("")
-	public String inicioProducto(Model model) {
-		List<Producto> listaProductos = prodService.findAll();
-		model.addAttribute("listaProductos",listaProductos);
-		return "productos.jsp";
-		
+	public String inicioProducto(HttpSession session, Model model) {
+	
+		Integer registrado = (Integer) session.getAttribute("registrado");
+		if (registrado==1) {
+			List<Producto> listaProductos = prodService.findAll();
+			model.addAttribute("listaProductos",listaProductos);
+			//model.addAttribute("listaProductos", prodService.productosPages(0));
+			
+			Page<Producto> productos = prodService.productosPages(0, PAGE_SIZE);
+			
+			int totalPaginas = productos.getTotalPages();
+			model.addAttribute("totalPaginas", totalPaginas);
+			model.addAttribute("productos", productos);
+			
+			
+			return "productos.jsp";
+		}
+		else {
+			return "index.jsp";
+		}
 	}
 	
 	@RequestMapping("/insertar")
@@ -47,7 +68,7 @@ public class ProductoController {
 	
 	@RequestMapping("editar/{id}")
 	public String editProd(@PathVariable("id") Long id,
-			Model model) {
+			HttpSession session, Model model) {
 		Producto prod = prodService.findById(id);
 		
 		List<Categoria> listaCategorias = categService.findAll();
@@ -59,17 +80,32 @@ public class ProductoController {
 	}
 	
 	@RequestMapping("/update")
-	public String updateProd(@ModelAttribute("producto") Producto prod) {
+	public String updateProd(@ModelAttribute("producto") Producto prod,
+			HttpSession session) {
 		prodService.save(prod);
 		return "redirect:/productos";
 	}
 	
 	@RequestMapping("eliminar/{id}")
-	public String deleteProd(@PathVariable("id") Long id) {
+	public String deleteProd(@PathVariable("id") Long id, HttpSession session) {
 		prodService.deleteProd(id);
 		return "redirect:/productos";
 	}
 	
+	/*
+	 * Paginación
+	 */
+	@RequestMapping("/pagina/{numeroPagina}")
+	public String getProductosPagina(@PathVariable("numeroPagina")  int numeroPagina,
+			Model model) {
+			//Las paginas iterables empiezan en 0 en el Backend pero en Front, parten de 1
+		Page<Producto> productos = prodService.productosPages(numeroPagina-1, PAGE_SIZE);
+		int totalPaginas = productos.getTotalPages();
+		model.addAttribute("totalPagina", totalPaginas);
+		model.addAttribute("productos", productos);
+		
+		return "productos.jsp";
+	}
 	
 
 }
